@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Image Filter Application </title>
+</head>
+<style>
+    nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #083252; /* Replace with your actual color */
+  padding: 1.0rem 0;
+}
+h1 {
+    color: beige;
+}
+#start {
+    font-size: medium;
+}
+button {
+    background-color: #083252;
+    color: beige;
+}
+</style>
+<body>
+   <nav>
+        <h1> &nbsp; FACE ART </h1>
+   </nav>
+   <div id="start">
+    <p> Upload an image of your face and pick the art style you want! </p>
+   </div>
+    <form id="upload-form">
+        <input type="file" name="image" required>
+        <select name="filter">
+            <option value="cartoon">Cartoonize</option>
+            <option value="pop_art">Pop Art</option>
+            <option value="mosaic">Mosaic</option>
+        </select>
+        <br/>
+        <br/>
+        <button type="submit">Upload and Apply Filter</button>
+    </form>
+    <br/>
+    
+    <img id="filtered-image" style="display:none;">
+
+    <script>
+        document.getElementById('upload-form').onsubmit = function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                var img = document.getElementById('filtered-image');
+                img.src = data.image;
+                img.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>
